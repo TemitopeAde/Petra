@@ -635,4 +635,8 @@ header.show {
     height: 84vh;
     text-align: center;
   }
+
+  .section.footer {
+    height: 80vh;
+  }
 }
