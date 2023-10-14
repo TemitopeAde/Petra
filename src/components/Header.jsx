@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import Logo from '../img/Logo/Logo 1/PNG.png'
 
 const Header = () => {
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
   return (
-    <header className="index__header center">
+    <header className={isChecked ? "index__header center show" : "index__header center"}>
       <nav className="container">
         <div>
           <Link href="#">
@@ -14,7 +20,7 @@ const Header = () => {
           </Link>
         </div>
         <div>
-          <ul>
+          <ul className={isChecked ? "show" : ""}>
             <li>
               <Link to="/">
                 Home
@@ -43,6 +49,17 @@ const Header = () => {
           </span>
         </div>
       </nav>
+
+      <div className="hamburger">
+        <input
+          type="checkbox"
+          role="button"
+          aria-label="Display the menu"
+          class="menu"
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+        />
+      </div>
     </header>
   )
 }
