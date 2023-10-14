@@ -630,13 +630,10 @@ header.show {
 }
 
 
-@media screen and (max-width: 412px) {
+@media screen and (max-width: 414px) {
   .section.footer {
     height: 84vh;
     text-align: center;
   }
 
-  .section.footer {
-    height: 80vh;
-  }
 }
