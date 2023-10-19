@@ -178,7 +178,7 @@ header {
   flex-direction: column;
   gap: 2rem;
 }
-
+/* 
 .herosection::before {
   content: '';
   position: absolute;
@@ -190,7 +190,7 @@ header {
   transform-origin: top right;
   height: 100%;
   background: linear-gradient(45deg, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0.76) 100%);
-}
+} */
 
 
 

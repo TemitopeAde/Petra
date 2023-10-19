@@ -69,12 +69,12 @@ const HomeContent = () => {
     <>
       <ToastContainer />
       <section class="herosection">
-        <div class="container">
+        {/* <div class="container">
           <h1>Petra Power</h1>
           <p>Vivamus nisl turpis, ultrices at fermentum eget, interdum ac urna. Proin at turpis mauris. Interdum et
             malesuada fames
             ac ante ipsum primis in faucibus.</p>
-        </div>
+        </div> */}
       </section>
 
       <section class="home-content">
