@@ -319,6 +319,11 @@ header {
   align-self: center;
 }
 
+.contact-form-flex p {
+  color: crimson;
+  text-align: left;
+}
+
 .home-content .home-content__jobs button {
   margin-top: auto;
 }

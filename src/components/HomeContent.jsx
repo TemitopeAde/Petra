@@ -1,9 +1,73 @@
 import React from 'react'
+import { useForm } from "react-hook-form"
+import { useMutation } from 'react-query';
+import { ToastContainer, toast } from 'react-toastify';
+import GoogleMapReact from 'google-map-react';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 import logo from '../img/Logo/Logo 1/PNG.png'
+import logo2 from '../img/Logo/Logo 2/logo2.png'
 
 const HomeContent = () => {
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  
+  const defaultProps = {
+    center: {
+      lat: 41.378980,
+      lng: -81.449680
+    },
+    zoom: 11
+  };
+
+  // Define your mutation function
+  const sendFormToEndpoint = async (formData) => {
+    // Make the API request to send the form data
+    try {
+      const response = await fetch('http://localhost:5100/api/v1/jobs/contact-us', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error('Failed to send the form data');
+      }
+
+      return response.json();
+    } catch (error) {
+      throw new Error('Failed to send the form data');
+    }
+  };
+
+  // Use the useMutation hook
+  const mutation = useMutation(sendFormToEndpoint, {
+    onError: (error) => {
+      // Handle errors here
+      const notify = () => toast("Form not submitted, try again");
+      notify()
+    },
+    onSuccess: (data) => {
+      // Handle successful response
+      reset();
+      const notify = () => toast("Form submitted successfully");
+      notify()
+      console.log('Form submitted successfully', data);
+    },
+  });
+
+  // Handle form submission
+  const onSubmit = (data) => {
+    mutation.mutate(data); 
+  };
+
   return (
     <>
+      <ToastContainer />
       <section class="herosection">
         <div class="container">
           <h1>Petra Power</h1>
@@ -37,11 +101,9 @@ const HomeContent = () => {
         </div>
 
         <section class="home-content__two container">
-          <svg width="197" height="57" viewBox="0 0 197 57" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="-85.5" y="-34" width="282" height="106" fill="#047D00" />
-          </svg>
+          
 
-          {/* <h2>petra<span>power</span></h2> */}
+          <img style={{ margin: "2rem 0", width: "282px"}} src={logo2} alt="petra power" />
 
           <div class="home-content__jobs">
             <div>
@@ -106,34 +168,61 @@ const HomeContent = () => {
             <section className='home-content__four-maps'>
               <h2>More info</h2>
               <p>Have a question? We are here to help. Send us a message and we’ll be in touch.</p>
-              <div className='maps'>
-
+              <div style={{ height: '100%', width: '100%'}} className='maps'>
+                <GoogleMapReact
+                  bootstrapURLKeys={{ key: "" }}
+                  defaultCenter={defaultProps.center}
+                  defaultZoom={defaultProps.zoom}
+                >
+                </GoogleMapReact>
               </div>
             </section>
             <section className='home-content__four-contact-us'>
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='contact-form-flex'>
                   <div className='firstLast'>
                     <div>
-                      <input type="text" placeholder='First name' />
+                      <input type="text" placeholder='First name' {...register("firstName", {
+                        required: true,
+                        minLength: 2
+                      })} />
+                      {errors.firstName && <p>This field is required</p>}
                     </div>
 
                     <div>
-                      <input type="text" placeholder='Last name' />
+                      <input type="text" placeholder='Last name' {...register("lastName", {
+                        required: true,
+                        minLength: 2
+                      })} />
+                      {errors.lastName && <p>This field is required</p>}
                     </div>
                   </div>
                   <div>
-                    <input type="email" placeholder='Your email' />
+                    <input type="email" placeholder='Your email' {...register("email", {
+                      required: true,
+                      
+                    })} />
+                    {errors.email && <p>This field is required</p>}
                   </div>
                   <div>
-                    <input type="number" placeholder='Your phone' />
+                    <input type="number" placeholder='Your phone' {...register("phone", {
+                      required: true,
+              
+                    })} />
+                    {errors.phone && <p>This field is required</p>}
                   </div>
                   <div>
-                    <textarea placeholder='Your message' cols="30" rows="10"></textarea>
+                    <textarea placeholder='Your message' cols="30" rows="10" {...register("message", {
+                      required: true,
+                      
+                    })}></textarea>
+                    {errors.message && <p>This field is required</p>}
                   </div>
                 </div>
 
-                <button type="submit">Submit</button>
+                <button type="submit" disabled={mutation.isLoading}>
+                  {mutation.isLoading ? 'Submitting...' : 'Submit'}
+                </button>
               </form>
 
             </section>

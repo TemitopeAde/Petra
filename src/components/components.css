@@ -393,7 +393,7 @@ footer .footer__copyright {
 }
 
 
-::placeholder {
+.upload__flex ::placeholder {
   color: #fff;
 }
 
