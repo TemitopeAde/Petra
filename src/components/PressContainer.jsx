@@ -3,7 +3,7 @@ import React from 'react'
 const PressContainer = () => {
   return (
     <div className='press__container_wrapper'>
-      <div className='press_flex'>
+      <div className='press_flex container'>
         <div>
           <a href="https://www.wkyc.com/article/money/economy/mission-possible/nasa-glenn-northeast-ohio-generating-jobs/95-ea11f418-8dcb-4b4a-a6a0-c1c3a697e3ff">
             https://www.wkyc.com/article/money/economy/mission-possible/nasa-glenn-northeast-ohio-generating-jobs/95-ea11f418-8dcb-4b4a-a6a0-c1c3a697e3ff
