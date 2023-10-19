@@ -17,7 +17,7 @@ const Header = () => {
 
   };
   return (
-    <header className={isChecked ? "index__header center show" : "index__header center"}>
+    <header className={isActive ? "index__header center show" : "index__header center"}>
       <nav className="container">
         <div>
           <Link href="#">
@@ -26,7 +26,7 @@ const Header = () => {
           </Link>
         </div>
         <div>
-          <ul className={isChecked ? "show" : ""}>
+          <ul className={isActive ? "show" : ""}>
             <li>
               <Link to="/">
                 Home
@@ -58,7 +58,7 @@ const Header = () => {
 
       <div className="hamburger">
         <div className={`containers ${isActive ? 'active' : ''}`} onClick={toggleActive}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="150" viewBox="0 0 200 200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="90" height="150" viewBox="0 0 200 200">
             <g stroke-width="6.5" stroke-linecap="round">
               <path
                 d="M72 82.286h28.75"
