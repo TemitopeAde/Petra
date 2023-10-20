@@ -178,6 +178,7 @@ header {
   flex-direction: column;
   gap: 2rem;
 }
+
 /* 
 .herosection::before {
   content: '';
@@ -214,7 +215,67 @@ header {
   background: var(--black-shade);
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 1rem;
+}
+
+.add_job-form {
+  background: #141211;
+}
+
+.add_job-form form {
+  padding: 10rem 0;
+}
+
+.add_job-form input,
+.add_job-form textarea {
+  border-radius: 5px;
+  border: 2px solid rgb(222, 222, 222);
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140.5%;
+  height: 56px;
+  padding-left: 1rem;
+  background: transparent;
+  width: 100%;
+}
+
+.add_job-form textarea {
+  height: 300px;
+  margin-top: 2rem;
+  padding: 1rem 
+}
+
+.white-text {
+  color: white;
+}
+
+.add_job-form form span {
+  color: crimson;
+  font-family: Poppins;
+}
+
+.add_job-form button[type="submit"] {
+  display: inline-flex;
+  padding: 10px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background: var(--green);
+  border-radius: 10px;
+  color: var(--white);
+  leading-trim: both;
+  text-edge: cap;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 25px;
+  cursor: pointer;
+  transition: .7s;
+  margin-top: 2rem;
 }
 
 .home-content__one {

@@ -20,9 +20,8 @@ const Header = () => {
     <header className={isActive ? "index__header center show" : "index__header center"}>
       <nav className="container">
         <div>
-          <Link href="#">
+          <Link onClick={() => window.location.href = '/'}>
             <img height="76px" src={Logo} alt="Petra" />
-
           </Link>
         </div>
         <div>
@@ -37,11 +36,7 @@ const Header = () => {
                 About us
               </Link>
             </li>
-            <li>
-              <Link to="/jobs">
-                Jobs
-              </Link>
-            </li>
+            
             <li>
               <Link to="/press">
                 Press
@@ -63,7 +58,7 @@ const Header = () => {
               <path
                 d="M72 82.286h28.75"
                 fill="#009100"
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 stroke="#fff"
               />
               <path

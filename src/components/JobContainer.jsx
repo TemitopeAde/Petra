@@ -1,94 +1,76 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form"
-
+import DOMPurify from 'dompurify'
 import "../components/components.css";
+import { useMutation } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 const JobContainer = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { id } = useParams();
+  const [job, setJob] = useState({});
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
   // console.log(errors);
-  const onSubmit = (data) => {
-    console.log(data);
+  
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('phone', data.phone);
+    formData.append('resume', data.resume[0]); // Upload the first file from the list
+
+    try {
+      const response = await fetch('http://localhost:5100/api/v1/jobs/upload-resume', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        // Handle success (e.g., show a success message)
+        console.log('File uploaded successfully');
+        reset();
+      } else {
+        // Handle errors
+        console.error('Error uploading file');
+      }
+    } catch (error) {
+      // Handle exceptions (e.g., network errors)
+      console.error('Error:', error);
+    }
   };
+
+  // Define a function to fetch a single job by ID
+  async function fetchJob() {
+    const response = await fetch(`http://localhost:5100/api/v1/jobs/${id}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  }
+
+  // Use useMutation to fetch a single job by ID
+  const { mutate: fetchJobById, isLoading, isError } = useMutation(fetchJob, {
+    onMutate: () => {
+      // You can handle any pre-fetching logic here
+      
+    },
+    onSuccess: (data) => {
+      setJob(data.job)
+    },
+  });
+
+  useEffect(() => {
+    // Fetch the job by ID using the fetchJobById mutation
+    fetchJobById();
+  }, []);
 
   return (
     <div className='job__container'>
       <div className='container'>
-        <h2 className='job__title'>Senior Researcher</h2>
-        <p className='job__description'>Petra Power is seeking an accomplished, ambitious, and creative R&D
-          researcher to lead a small team in development and
-          improvement of solid oxide fuel cells and
-          solid oxide fuel cell (SOFC) power systems for
-          the Company. This position will work closely
-          with the Company’s CTO and other Senior level
-          researchers to develop and help build one of the
-          world’s first affordable, reliable, and efficient
-          commercial SOFC systems. An ideal candidate for
-          this role has PhD-level research experience and
-          has some experience working on end-to-end SOFC
-          development in an industry setting. Different
-          qualifications can be considered for this position as well.
-          Candidates should have extensive materials and ceramics
-          experience, experience working in a cleanroom,
-          experience with tape casting and high-temperature
-          furnace usage and a mastery of wet chemistry for
-          ceramic materials. Candidates should also be
-          comfortable operating electron microscopes.
-          As an employee in a small startup, a willingness
-          to learn new skills, take on unexpected challenges,
-          and be flexible with hours and responsibilities are
-          highly valued. The following
-          is an example of some job responsibilities associated with this role:
+        <h2 className='job__title'>{job?.title}</h2>
+        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(job?.description) }} className='job__description'>
         </p>
-        <ul className="job__responsibilities">
-          <li>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 12C2.68629 12 0 9.31368 0 6C0 2.68629 2.68629 0 6 0C9.31368 0 12 2.68629 12 6C12 9.31368 9.31368 12 6 12ZM6 10.8C8.65098 10.8 10.8 8.65098 10.8 6C10.8 3.34903 8.65098 1.2 6 1.2C3.34903 1.2 1.2 3.34903 1.2 6C1.2 8.65098 3.34903 10.8 6 10.8ZM6 7.8C5.00586 7.8 4.2 6.99414 4.2 6C4.2 5.00586 5.00586 4.2 6 4.2C6.99414 4.2 7.8 5.00586 7.8 6C7.8 6.99414 6.99414 7.8 6 7.8Z" fill="#3DAB35" />
-            </svg>
-            <span>Developing and executing research plans</span>
-          </li>
-          <li>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 12C2.68629 12 0 9.31368 0 6C0 2.68629 2.68629 0 6 0C9.31368 0 12 2.68629 12 6C12 9.31368 9.31368 12 6 12ZM6 10.8C8.65098 10.8 10.8 8.65098 10.8 6C10.8 3.34903 8.65098 1.2 6 1.2C3.34903 1.2 1.2 3.34903 1.2 6C1.2 8.65098 3.34903 10.8 6 10.8ZM6 7.8C5.00586 7.8 4.2 6.99414 4.2 6C4.2 5.00586 5.00586 4.2 6 4.2C6.99414 4.2 7.8 5.00586 7.8 6C7.8 6.99414 6.99414 7.8 6 7.8Z" fill="#3DAB35" />
-            </svg>
-            <span>Developing and executing research plans</span>
-          </li>
-          <li>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 12C2.68629 12 0 9.31368 0 6C0 2.68629 2.68629 0 6 0C9.31368 0 12 2.68629 12 6C12 9.31368 9.31368 12 6 12ZM6 10.8C8.65098 10.8 10.8 8.65098 10.8 6C10.8 3.34903 8.65098 1.2 6 1.2C3.34903 1.2 1.2 3.34903 1.2 6C1.2 8.65098 3.34903 10.8 6 10.8ZM6 7.8C5.00586 7.8 4.2 6.99414 4.2 6C4.2 5.00586 5.00586 4.2 6 4.2C6.99414 4.2 7.8 5.00586 7.8 6C7.8 6.99414 6.99414 7.8 6 7.8Z" fill="#3DAB35" />
-            </svg>
-            <span>Developing and executing research plans</span>
-          </li>
-          <li>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 12C2.68629 12 0 9.31368 0 6C0 2.68629 2.68629 0 6 0C9.31368 0 12 2.68629 12 6C12 9.31368 9.31368 12 6 12ZM6 10.8C8.65098 10.8 10.8 8.65098 10.8 6C10.8 3.34903 8.65098 1.2 6 1.2C3.34903 1.2 1.2 3.34903 1.2 6C1.2 8.65098 3.34903 10.8 6 10.8ZM6 7.8C5.00586 7.8 4.2 6.99414 4.2 6C4.2 5.00586 5.00586 4.2 6 4.2C6.99414 4.2 7.8 5.00586 7.8 6C7.8 6.99414 6.99414 7.8 6 7.8Z" fill="#3DAB35" />
-            </svg>
-            <span>Developing and executing research plans</span>
-          </li>
-          <li>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 12C2.68629 12 0 9.31368 0 6C0 2.68629 2.68629 0 6 0C9.31368 0 12 2.68629 12 6C12 9.31368 9.31368 12 6 12ZM6 10.8C8.65098 10.8 10.8 8.65098 10.8 6C10.8 3.34903 8.65098 1.2 6 1.2C3.34903 1.2 1.2 3.34903 1.2 6C1.2 8.65098 3.34903 10.8 6 10.8ZM6 7.8C5.00586 7.8 4.2 6.99414 4.2 6C4.2 5.00586 5.00586 4.2 6 4.2C6.99414 4.2 7.8 5.00586 7.8 6C7.8 6.99414 6.99414 7.8 6 7.8Z" fill="#3DAB35" />
-            </svg>
-            <span>Developing and executing research plans</span>
-          </li>
-          <li>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 12C2.68629 12 0 9.31368 0 6C0 2.68629 2.68629 0 6 0C9.31368 0 12 2.68629 12 6C12 9.31368 9.31368 12 6 12ZM6 10.8C8.65098 10.8 10.8 8.65098 10.8 6C10.8 3.34903 8.65098 1.2 6 1.2C3.34903 1.2 1.2 3.34903 1.2 6C1.2 8.65098 3.34903 10.8 6 10.8ZM6 7.8C5.00586 7.8 4.2 6.99414 4.2 6C4.2 5.00586 5.00586 4.2 6 4.2C6.99414 4.2 7.8 5.00586 7.8 6C7.8 6.99414 6.99414 7.8 6 7.8Z" fill="#3DAB35" />
-            </svg>
-            <span>Developing and executing research plans</span>
-          </li>
-        </ul>
-        <p className="intent__job">If you are interested in this position please submit your
-          name, email and phone number below along with an up-to-date
-          resume to be considered. If there is additional information
-          that the Petra Power team should consider, please include
-          it in a cover letter. If you believe you would be better
-          suited for the laboratory technician (link to the lab tech job page)
-          or another (link to the “other” job page) position, please apply by
-          clicking the links in-text or on our home page. If you would like
-          to learn more about the Company or open positions please submit a
-          resume or use our contact form on the
-          homepage and someone from our team will reach out to you shortly.
-        </p>
+
+        
       </div>
 
       <div className="upload__resume container">
