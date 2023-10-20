@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { useMutation } from 'react-query';
 import { ToastContainer, toast } from 'react-toastify';
-import GoogleMapReact from 'google-map-react';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -10,20 +9,14 @@ import logo from '../img/Logo/Logo 1/PNG.png'
 import logo2 from '../img/Logo/Logo 2/logo2.png'
 import { useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify';
+import { MyMap } from './Map';
 
 const HomeContent = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [jobs, setJobs] = useState([]);
   const navigate = useNavigate();
-  const defaultProps = {
-    center: {
-      lat: 41.378980,
-      lng: -81.449680
-    },
-    zoom: 11
-  };
 
-  
+
 
   // Define your mutation function
   const sendFormToEndpoint = async (formData) => {
@@ -91,6 +84,10 @@ const HomeContent = () => {
     },
   });
 
+  
+
+  
+
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -98,6 +95,7 @@ const HomeContent = () => {
   return (
     <>
       <ToastContainer />
+      
       <section className="herosection">
         {/* <div class="container">
           <h1>Petra Power</h1>
@@ -106,7 +104,6 @@ const HomeContent = () => {
             ac ante ipsum primis in faucibus.</p>
         </div> */}
       </section>
-
       <section className="home-content">
 
         <div className="home-content__one">
@@ -180,13 +177,9 @@ const HomeContent = () => {
             <section className='home-content__four-maps'>
               <h2>More info</h2>
               <p>Have a question? We are here to help. Send us a message and we’ll be in touch.</p>
-              <div style={{ height: '100%', width: '100%' }} className='maps'>
-                <GoogleMapReact
-                  bootstrapURLKeys={{ key: "" }}
-                  defaultCenter={defaultProps.center}
-                  defaultZoom={defaultProps.zoom}
-                >
-                </GoogleMapReact>
+              <div style={{ height: '380px', width: '100' }} className='maps'>
+                <MyMap />
+
               </div>
             </section>
             <section className='home-content__four-contact-us'>
